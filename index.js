@@ -13,7 +13,7 @@ async function games() {
   //Choose a game and the appropriate game will run 
 
   while ((chooseGame.toLowerCase().trim() !== "a") && (chooseGame.toLowerCase().trim() !== "b") && (chooseGame.toLowerCase().trim() !== "c")) {
-  chooseGame = await ask(`Please see the following menu and pick your game by entering the letter of your choice: 
+  chooseGame = await ask(`Welcome! Please see the following menu and pick your game by entering the letter of your choice: 
   a.) Play Computer Mind Reader - let the computer guess your secret number!
   b.) Play Player Guesser Game - try to guess the computer's game!
   c.) These games are lame and I am offended you think I would find them entertaining. Goodbye.\n`) 
@@ -30,10 +30,10 @@ async function games() {
 async function start() { 
 
   //opening message 
-  await ask(`\nWelcome to Computer Mind Reader. You will think of a number and I will use my superior clairvoyance to guess your secret number!
+  await ask(`\nWelcome to Computer Mind Reader! You will think of a number and I will use my superior clairvoyance to guess your secret number.
   \nPress any key when you've thought of your number.\n`);
 
-  //starting values for max and min, declare guess variable 
+  //starting values for max and min, declare min, max, guess variable 
   let max = await ask("Give me a number that is higher than your number - this will be the maximum number that I will guess.\n");
   max = +max;
   let min = 1;
@@ -53,7 +53,7 @@ async function start() {
       numbersGuessed.push(guess); 
      return guess  
   }
-  //calculate first guess before asking 
+  //calculate first guess
   guesser(max,min);
 
 //start off yesOrNo as N to start the loop: 
@@ -63,12 +63,11 @@ async function start() {
   //ask if my guess is right or wrong 
   yesOrNo = await ask(`Is your number ${guess}? Enter Y if yes or N if No.\n`);
 
-
 //if yes, game is over 
 if (yesOrNo.toUpperCase().trim() == "Y") {
   console.log(`I KNEW your number was ${guess}!!!! And I guessed it in only ${count} tries!\n`);
   
-  //want to play again?
+  //want to play again? if so, let's go to main menu. if not, exit program 
   let playAgain = await ask("That was F U N. Do you want to play another game? Type YES if you do\n");
   if (playAgain.toUpperCase().trim() === "YES") { 
     games (); 
@@ -81,10 +80,10 @@ while ((yesOrNo.toUpperCase().trim() != "Y") && (yesOrNo.toUpperCase().trim() !=
   yesOrNo = await ask(`You have to answer Y or N so I can know if I'm right!\n`); 
 }
 
-  //need to figure out if higher or lower - start by defining variable and assigning to an unimportant value: 
+  //my guess is wrong so I need to figure out if higher or lower - start by defining variable and assigning to an unimportant value: 
     let higherOrLower = "A" 
 
-    //need to keep asking until they answer H or L, change max, min & guess depending on if too high or low 
+    //need to keep asking until they answer H or L, then change max, min & guess depending on if too high or low 
     while ((higherOrLower.toUpperCase().trim() != "H") && (higherOrLower.toUpperCase().trim() != "L")) {
     higherOrLower = await ask(`Is your number higher or lower than ${guess}? Enter H if your number is higher or L if your number is lower.\n`)
 
@@ -105,11 +104,11 @@ while ((yesOrNo.toUpperCase().trim() != "Y") && (yesOrNo.toUpperCase().trim() !=
     else if (higherOrLower.trim().toUpperCase() === 'L') {
       if (guess == min) {
         priorGuess = guess-1;
-        //catch a cheater! eventually the cheater will be caught if they say that their number is below the min that was set: 
+        //catch a cheater! eventually the cheater will be caught if they say that their number is below the min: 
         console.log(`You said your secret number was higher than ${priorGuess}. It can't be lower than ${priorGuess} and higher than ${guess}.  There is no room for liars here. Goodbye.`)
         process.exit(); 
       }
-          //since the secret number is lower than the guess, new max is guess-1, calculate teh new guess and update the count:  
+      //since the secret number is lower than the guess, new max is guess-1, calculate teh new guess and update the count:  
       max = guess -1;
       guesser(max, min)
       counter(); 
@@ -121,7 +120,7 @@ while ((yesOrNo.toUpperCase().trim() != "Y") && (yesOrNo.toUpperCase().trim() !=
 //reverse game!
 async function inverse() { 
   //opening message 
-  await ask("Now let's play a game where I choose a number and then YOU try to guess it. Press enter when you're ready to start!\n");
+  await ask("Now let's play a game where I choose a number and then YOU try to guess it. Press any key when you're ready to start!\n");
 
   //ask the max 
   let max = await ask("What do you want the maximum in our guessing game to be?\n")
@@ -142,9 +141,9 @@ async function inverse() {
 // continue asking for guess until player's guess matches computer's guess 
   while (playerGuess !== computerNumber) {
   playerGuess = await ask(`I'm thinking of a number between 1 and ${max}. What is your guess? \n`);
+  console.log("Not quite! Try again.")
   playerGuess = +playerGuess; 
   counter();
-  console.log("Not quite! Try again.")
   }
 // when playerGuess === computerNumber, exit while loop, give option to  return to main menu if they want to play another game. 
   let playAgain = await ask(`You did it! You guessed my number in ${count} tries. \nThat was F U N. Do you want to play another game? Type YES if you do.\n`);
